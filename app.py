@@ -96,7 +96,7 @@ if not st.session_state["logged_in"]:
             st.subheader("Account Sign In")
             username = st.text_input("Username").strip()
             password = st.text_input("Password", type="password").strip()
-            submit = st.form_submit_button("Sign In to Portal", use_container_width=True)
+            submit = st.form_submit_button("Sign In to Portal")
 
             if submit:
                 user = USERS_DB.get(username)
@@ -143,7 +143,7 @@ with st.sidebar:
     
     safety_buffer_pct = st.slider("🛡️ Safety Buffer (+%):", min_value=5, max_value=25, value=10, step=1)
     
-    if st.button("🚪 Log Out", use_container_width=True):
+    if st.button("🚪 Log Out"):
         st.session_state["logged_in"] = False
         st.session_state["user_info"] = None
         st.rerun()
@@ -242,7 +242,7 @@ with tab2:
         if search_query:
             po_df = po_df[po_df['pizza_ingredients'].str.contains(search_query.lower(), case=False)]
             
-        st.dataframe(po_df, use_container_width=True)
+        st.dataframe(po_df)
         
         csv_data = po_df.to_csv(index=False)
         st.download_button(
