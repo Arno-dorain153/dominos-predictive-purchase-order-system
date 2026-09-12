@@ -1,72 +1,64 @@
-# Dominos - Predictive Purchase Order System
+# Dominos Predictive Purchase Order & Inventory System
 
-## Project Overview
-This project aims to optimize the ingredient ordering process for Dominos by predicting future sales and generating efficient purchase orders. By leveraging historical sales data and ingredient information, this system ensures that Dominos maintains the right stock levels, minimizing waste and preventing stockouts.
+An end-to-end Machine Learning, Time-Series Forecasting, and Procurement Optimization System for Dominos, paired with an interactive Web Portal with Role-Based Access Control (RBAC).
 
-## Skills Acquired
-- Data cleaning and preprocessing
-- Exploratory Data Analysis (EDA)
-- Time series forecasting
-- Predictive modeling
-- Business decision-making
-- Real-world application of data science
+---
 
-## Domain
-Food Service Industry
+## 💻 How to Run in Terminal
 
-## Problem Statement
-Dominos wants to enhance its ingredient ordering process by accurately forecasting sales. This project leverages historical sales data to develop a predictive model that generates a purchase order system, ensuring optimal ingredient stock levels.
+### 1. Install Dependencies
+```bash
+pip install pandas numpy scikit-learn statsmodels prophet matplotlib seaborn fastapi uvicorn streamlit
+```
 
-## Business Use Cases
-- **Inventory Management:** Ensure optimal stock levels to meet future demand without overstocking.
-- **Cost Reduction:** Minimize waste and reduce costs associated with expired or excess inventory.
-- **Sales Forecasting:** Accurately predict sales trends to inform business strategies and promotions.
-- **Supply Chain Optimization:** Streamline the ordering process to align with predicted sales and avoid disruptions.
+### 2. Step 1: Preprocess Datasets & Generate EDA Visualizations
+Runs data cleaning, handles missing values, removes outliers (IQR method), extracts calendar features, and generates EDA & Correlation charts:
+```bash
+python run_preprocessing.py
+```
 
-## Approach
+### 3. Step 2: Run Machine Learning Pipeline & Purchase Order Generator
+Evaluates 5 forecasting models (SARIMA, ARIMA, Random Forest, ExtraTrees, Polynomial Regression), performs 5-Fold Cross Validation, generates ROC & Confusion Matrix plots, and exports the 7-day ingredient purchase order:
+```bash
+python run_pipeline.py
+```
 
-### 1. Data Preprocessing and Exploration
-- **Data Cleaning:** Removed missing or inconsistent data entries, handled outliers, and formatted data appropriately.
-- **Exploratory Data Analysis (EDA):** Analyzed sales trends, seasonality, and patterns in historical sales data.
+### 4. Step 3: Launch Interactive Dominos Web Portal (FastAPI)
+Launches the Web Application with Dominos branding (Dominos Blue `#006491`, Dominos Red `#E31837`), interactive timeline filters, financial analytics, and purchase order tables:
+```bash
+python server.py
+```
+👉 Open your browser and navigate to: **`http://localhost:8000`**
 
-### 2. Sales Prediction
-- **Feature Engineering:** Created relevant features from sales data such as day of the week, month, promotional periods, and holiday effects.
-- **Model Selection:** Chose appropriate time series forecasting models, including ARIMA, SARIMA, Prophet, LSTM, and Regression Model.
-- **Model Training:** Trained predictive models on historical sales data.
-- **Model Evaluation:** Used Mean Absolute Percentage Error (MAPE) to evaluate model performance.
+### 5. Step 4 (Optional): Launch Streamlit Dashboard
+```bash
+streamlit run app.py
+```
+👉 Open your browser and navigate to: **`http://localhost:8501`**
 
-### 3. Purchase Order Generation
-- **Sales Forecasting:** Predicted pizza sales for the next week using the trained model.
-- **Ingredient Calculation:** Calculated required ingredient quantities based on predicted sales and ingredient datasets.
-- **Purchase Order Creation:** Generated a detailed purchase order listing the quantities of each ingredient needed.
+---
 
-## Results
-- Accurate sales predictions.
-- A comprehensive purchase order detailing the required ingredients for the forecasted sales period.
+## 🔐 Login Credentials (RBAC Profiles)
 
-## Technical Tags
-- Data Cleaning
-- EDA
-- Time Series Forecasting
-- ARIMA/SARIMA/Prophet/LSTM/Regression Model
-- Predictive Modeling
-- Inventory Management
-- Python
-- Pandas
-- Scikit-learn
-- Matplotlib/Seaborn
+| Profile Role | Username | Password | Dedicated View |
+|---|---|---|---|
+| 👔 **Upper Management (Admin)** | `admin` | `admin123` | Gross Sales Revenue ($786.3k), Food Ingredient Spend (~30%), Food Wastage Cost & ML Savings, Timeline Filter, Lowest Wastage Month Highlight, Supplier PO Approvals. |
+| 🍕 **Kitchen Employee** | `employee` | `dominos123` | Upcoming 7-Day Food Purchase Order, Base Weight (kg), Safety Stock Buffer Control (+5% to +25%), Recommended 5kg Supplier Packs, Search & CSV Export. |
 
-## Datasets
-- **Sales Dataset:** [Link to Sales Dataset](#)
-- **Ingredients Dataset:** [Link to Ingredients Dataset](#)
+---
 
-### Dataset Explanation
-- **Sales Data:** Contains historical sales records, including date, pizza type, quantity sold, price, category, and ingredients.
-- **Ingredient Data:** Lists ingredient requirements for each pizza type, including pizza type, ingredient, and quantity needed.
+## 🎯 What to Expect
 
-## Conclusion
-This project demonstrates the ability to accurately predict sales for Dominos, leading to efficient inventory management and cost reductions. By utilizing historical data and predictive modeling techniques, Dominos can optimize its supply chain operations and improve overall business performance.
+### 📈 Model Performance Benchmark:
+* **Best Forecasting Model**: **SARIMA $(1,0,1)\times(1,0,1)_7$** with **17.10% MAPE** and **30.58 RMSE**.
+* **Best Classification Model**: **Tuned ExtraTrees Classifier** with **74.54% Precision** and **0.7335 ROC-AUC**.
 
-## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
+### 📊 Generated Image & Data Artifacts:
+* `cleaned_pizza2.csv`: Preprocessed daily sales records.
+* `cleaned_ingredients.csv`: Standardized ingredient recipe weights.
+* `ingredient_purchase_order.csv`: Detailed 7-day purchasing list for all 62 raw ingredients with 10% safety stock.
+* `correlation_matrix.png`: Heatmap of sales and calendar feature correlations.
+* `confusion_matrix.png`: Confusion matrix heatmap for the top classification model.
+* `feature_importance.png`: Relative feature importance bar chart.
+* `roc_curve.png`: Multi-model ROC-AUC comparison plot.
+* `eda_charts.png`: Breakdown of sales by pizza category and pizza size.
